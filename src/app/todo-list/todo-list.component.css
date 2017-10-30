@@ -1,0 +1,7 @@
+.completed { 
+    text-decoration: line-through;
+  }
+
+th {
+  background: #47be71;
+}

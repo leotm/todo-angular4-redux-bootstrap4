@@ -1,0 +1,61 @@
+<h6 class="mb-3">What needs to be done?</h6>
+<form (ngSubmit)="obSubmit()" #todoForm="ngForm">
+  <div class="form-row">
+    <div class="col-auto">
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="e.g. Upgrade to Z270"
+          id="description"
+          [(ngModel)]="model.description"
+          name="description"
+          #description="ngModel"
+          autofocus
+          >
+    </div>
+    <div class="col-auto">
+      <select 
+        class="form-control"
+        id="urgency"
+        [(ngModel)]="model.urgency"
+        name="urgency"
+        #urgency="ngModel">
+        <option value="low">Low</option>
+        <option value="medium" selected="selected">Medium</option>
+        <option value="high">High</option>
+      </select>
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary">Create</button>
+    </div>
+  </div>
+</form>
+<br />
+<div *ngIf="(todos | async)?.length!=0">
+<table class="table">
+  <thead class="thead-inverse">
+    <tr>
+      <th>No.</th>
+      <th>Description</th>
+      <th>Urgency</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of todos | async">
+      <td><span (click)="toggleTodo(t)" [class.completed]="t.isCompleted">{{ t.id }}</span></td>
+      <td><span (click)="toggleTodo(t)" [class.completed]="t.isCompleted">{{ t.description }}</span></td>
+      <td class="mt-5">
+        <span *ngIf="t.urgency == 'low'" class="badge badge-success mt-2">Low</span>
+        <span *ngIf="t.urgency == 'medium'" class="badge badge-warning mt-2">Medium</span>
+        <span *ngIf="t.urgency == 'high'" class="badge badge-danger mt-2">High</span>
+      </td>
+      <td><button class="btn btn-primary" (click)="removeTodo(t)">Remove</button></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Click a number or description to mark it as done.</p>
+<p><span class="badge badge-secondary">Updated: {{ (lastUpdate | async) | date:'short' }} | No. items: {{ (todos | async).length }}</span></p>
+<button class="btn btn-primary mb-2" (click)="clearTodos()">Clear items</button>
